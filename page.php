@@ -15,7 +15,7 @@
 	if($weekday_now <= 5) {
 		$day_category = "koolipäev";
 	} 
-	else {$day_category = "puhkepäev";}
+	else {$day_category = "puhkepäev" and $day_time = "vaba aeg";}
 	
 	//lisan lehele juhusliku foto
 	$photo_dir = "photos/";
