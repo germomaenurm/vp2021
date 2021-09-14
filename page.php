@@ -43,14 +43,14 @@
 	//<img src="photos/pilt.jpg" alt="Tallinna Ülikool">
 	$photo_html = '<img src="' .$photo_dir .$all_photos[$photo_num] .'" alt="Tallinna Ülikool">';
 	
-	$day_time = "vaba päev";
+	$day_time = "tavaline aeg";
 	if($hour_now >=8 and $hour_now <= 18) {
 		$day_time = "tundide aeg";
 	}
 	if($hour_now >8 and $hour_now >=23) {
 		$day_time = "uneaeg";
 	}
-	if($hour_now <=18 and $hour_now <23) {
+	if($hour_now >=18 and $hour_now <23) {
 		$day_time = "vaba aeg";
 	}
 	//if($hour_now < 7 and $hour_now > 23)
