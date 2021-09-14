@@ -52,6 +52,7 @@
 	//...
 	//<li>pildifailn.jpg</li>
 	//</ul>
+	//k
 	
 	for($i = 0; $i < $file_count; $i++) {
 		$photo_list_html .= "<li>" .$all_photos[$i] ."</li> \n";
