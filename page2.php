@@ -39,6 +39,11 @@
 	
 	$file_count = count($all_photos);
 	$photo_num = mt_rand(0, $file_count - 1);
+	
+	if(isset($_POST["photo_select_submit"])) {
+		$pic_num = $_POST["photo_select"];
+	}
+	
 	//echo $photo_num
 	//<img src="photos/pilt.jpg" alt="Tallinna Ülikool">
 	$photo_html = '<img src="' .$photo_dir .$all_photos[$photo_num] .'" alt="Tallinna Ülikool">';
@@ -61,7 +66,11 @@
 	
 	$photo_select_html = '<select name="photo_select">' ."\n";
 	for($i = 0; $i < $file_count; $i++) {
-		$photo_select_html .= '<option value="' .$i .'">' .$all_photos[$i] ."</option> \n";
+		$photo_select_html .= '<option value="' .$i .'"';
+		if($i == $photo_num) {
+			$photo_select_html .= "selected";
+		}
+		$photo_select_html .= '>' .$all_photos[$i] ."</option> \n";
 	}
 	$photo_select_html .= "</select> \n";
 	
@@ -91,7 +100,8 @@
 		
 		<form method="POST">
 			<?php echo $photo_select_html; ?>
-		
+			<input type="submit" name="photo_select_submit" value="<?php echo $photo_select_html; ?>">
+		</form>
 		<?php 
 			echo $photo_html;
 			echo $photo_list_html;
