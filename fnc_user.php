@@ -39,13 +39,14 @@
 				header("Location: home.php");
 				exit();
 			} else {
-				$notice = "Kasutajanimi või salasõna on vale!"
+				$notice = "Kasutajanimi või salasõna on vale!";
 			}
 		} else {
-			$notice = "Kasutajanimi või salasõna on vale!"
+			$notice = "Kasutajanimi või salasõna on vale!";
 		}
-	}
+	
 	
 		$stmt->close();
 		$conn->close();
 		return $notice;
+	}	
