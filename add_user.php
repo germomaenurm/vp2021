@@ -2,7 +2,7 @@
     
 	require_once("../../config.php");
     require_once("fnc_general.php");
-    //require_once("fnc_user.php");
+    require_once("fnc_user.php");
 
     $notice = null;
     $firstname = null;
@@ -42,7 +42,7 @@
 			}
 			//perekonnanimi
 			if(isset($_POST["surname_input"]) and !empty($_POST["surname_input"])) {
-				$surname = test_input(filter_var($_POST["surnamename_input"], FILTER_SANITIZE_STRING));
+				$surname = test_input(filter_var($_POST["surname_input"], FILTER_SANITIZE_STRING));
 				if(empty($surname)) {
 					$surname_error = " Palun sisesta oma perekonnanimi!";
 				}
@@ -122,6 +122,12 @@
 			} else{
 				$confirm_password_error = " Palun sisesta salasõna teist korda uuesti!";
 			}
+			
+			//kui kõik korras siis salvestame
+			if(empty($firstname_error) and empty($surname_error) and empty($birth_month_error) and empty($birth_year_error) and empty($birth_day_error) and empty($birth_date_error) and empty($gender_error) and empty($email_error) and empty($password_error) and empty($confirm_password_error)){
+				$notice = sign_up($firstname, $surname, $email, $gender, $birth_month, $birth_date, $_POST["password_input"]);
+			}
+	
         }//if isset lõppeb
     }//if request_method lõppeb
 ?>
