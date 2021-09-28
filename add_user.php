@@ -1,5 +1,6 @@
 <?php
-    require_once("../../config.php");
+    
+	require_once("../../config.php");
     require_once("fnc_general.php");
     //require_once("fnc_user.php");
 
