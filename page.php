@@ -1,4 +1,5 @@
 <?php
+	session_start();
 	require_once("../../config.php");
 	require_once("fnc_user.php");
 	$author_name = "Germo Mäenurm";
@@ -83,10 +84,32 @@
 	}
 	$photo_select_html .= "</select> \n";
 	
-    //sisse logimise ...
-    $notice = null;
+    $email = null;
+	$email_error = null;
+	$password_error = null;
+	$notice = null;
+    //sisselogimine
     if(isset($_POST["login_submit"])){
-        $notice = sign_in($_POST["email_input"], $_POST["password_input"]);
+		if(isset($_POST["email_input"]) and !empty($_POST["email_input"])){
+			$email = filter_var($_POST["email_input"], FILTER_VALIDATE_EMAIL);
+			if(strlen($email) < 5){
+				$email_error = "Palun sisesta kasutajatunnus (e-mail)!";
+			}
+		} else {
+			$email_error = "Palun sisesta kasutajatunnus (e-mail)!";
+		}
+		if(isset($_POST["password_input"]) and !empty($_POST["password_input"])){
+			if(strlen($_POST["password_input"]) < 8){
+				$password_error = "Sisestatud salasõna on liiga lühike!";
+			}
+		} else {
+			$password_error = "Palun sisesta salasõna!";
+		}
+		if(empty($email_error) and empty($password_error)){
+			$notice = sign_in($email, $_POST["password_input"]);
+		} else {
+			$notice = $email_error ." " .$password_error;
+		}
     }
 ?>
 <!DOCTYPE html>
