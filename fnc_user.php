@@ -65,3 +65,5 @@
         $conn->close();
         return $notice; 
     }	
+	
+	function profile_info

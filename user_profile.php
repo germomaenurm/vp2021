@@ -1,5 +1,5 @@
 <?php
-		//alustame sessiooni
+	//alustan sessiooni
     session_start();
     //kas on sisselogitud
     if(!isset($_SESSION["user_id"])){
@@ -17,6 +17,23 @@
 	
 	$notice = null;
 	$description = null; //tulevikus loetakse siia andmetabelsit olemasolev kirjeldus
+	
+	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+		if(isset($_POST["profile_submit"])){
+			if(!empty($_POST["description_input"])){
+				$description = test_input(filter_var($_POST["description_input"], FILTER_SANITIZE_STRING));
+			} else {
+				$description = null;
+			}
+			if(!empty($_POST["bg_color_input"]) and !empty($_POST["text_color_input"])){
+				$_SESSION["bg_color"] = $_POST["bg_color_input"];
+				$_SESSION["text_color"] = $_POST["text_color_input"];
+			}
+			if(!empty($description) and !empty($_SESSION["bg_color"]) and !empty($_SESSION["text_color"])){
+				$notice = profile_info
+			}
+		}
+	}
 
 	require_once("page_header.php");
 ?>
