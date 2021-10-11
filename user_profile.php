@@ -16,24 +16,13 @@
 	require_once("fnc_general.php");
 	
 	$notice = null;
-	$description = null; //tulevikus loetakse siia andmetabelsit olemasolev kirjeldus
+	$description = read_user_description(); //tulevikus loetakse siia andmetabelsit olemasolev kirjeldus
 	
-	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-		if(isset($_POST["profile_submit"])){
-			if(!empty($_POST["description_input"])){
-				$description = test_input(filter_var($_POST["description_input"], FILTER_SANITIZE_STRING));
-			} else {
-				$description = null;
-			}
-			if(!empty($_POST["bg_color_input"]) and !empty($_POST["text_color_input"])){
-				$_SESSION["bg_color"] = $_POST["bg_color_input"];
-				$_SESSION["text_color"] = $_POST["text_color_input"];
-			}
-			if(!empty($description) and !empty($_SESSION["bg_color"]) and !empty($_SESSION["text_color"])){
-				$notice = profile_info
-			}
-		}
+	if(isset($_POST["profile_submit"])){
+		$description = test_input(filter_var($_POST["description_input"], FILTER_SANITIZE_STRING));
+		$notice = store_user_profile($description, $_POST["bg_color_input"],$_POST["text_color_input"]);
 	}
+	
 
 	require_once("page_header.php");
 ?>

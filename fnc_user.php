@@ -66,4 +66,56 @@
         return $notice; 
     }	
 	
-	function profile_info
+	function read_user_description(){
+		//kui profiil on juba olemas, siis loeb kasutaja lühitutvustust
+		$notice = null;
+		$conn = new mysqli($GLOBALS["server_host"], $GLOBALS["server_user_name"], $GLOBALS["server_password"], $GLOBALS["database"]);
+		$conn->set_charset("utf8");
+		//vaatame kas profiil on juba olemas
+		$stmt = $conn->prepare("SELECT description FROM vpr_userprofiles WHERE userid = ?");
+		echo $conn->error;
+		$stmt->bind_param("i", $_SESSION["user_id"]);
+		$stmt->bind_result($description_from_db);
+		$stmt->execute();
+		if($stmt->fetch()){
+			$notice = $description_from_db;
+		}
+		$stmt->close();
+		$conn->close();
+		return $notice;
+	}
+	
+	function store_user_profile($description, $bg_color, $txt_color){
+		$notice = null;
+		$conn = new mysqli($GLOBALS["server_host"], $GLOBALS["server_user_name"], $GLOBALS["server_password"], $GLOBALS["database"]);
+		$conn->set_charset("utf8");
+		//vaatame kas profiil on juba olemas
+		$stmt = $conn->prepare("SELECT id FROM vpr_userprofiles WHERE userid = ?");
+		echo $conn->error;
+		$stmt->bind_param("i", $_SESSION["user_id"]);
+		$stmt->bind_result($id_from_db);
+		$stmt->execute();
+		if($stmt->fetch()){
+			$stmt->close();
+			//uuendame profiili
+			$stmt= $conn->prepare("UPDATE vpr_userprofiles SET description = ?, bgcolor = ?, txtcolor = ? WHERE userid = ?");
+			echo $conn->error;
+			$stmt->bind_param("sssi", $description, $bg_color, $txt_color, $_SESSION["user_id"]);
+		} else {
+			$stmt->close();
+			//tekitame uue profiili
+			$stmt = $conn->prepare("INSERT INTO vpr_userprofiles (userid, description, bgcolor, txtcolor) VALUES(?,?,?,?)");
+			echo $conn->error;
+			$stmt->bind_param("isss", $_SESSION["user_id"], $description, $bg_color, $txt_color);
+		}
+		if($stmt->execute()){
+			$_SESSION["bg_color"] = $_POST["bg_color_input"];
+			$_SESSION["text_color"] = $_POST["text_color_input"];
+			$notice = "Profiil salvestatud!";
+		} else {
+			$notice = "Profiili salvestamisel tekkis viga: " .$stmt->error;
+		}
+		$stmt->close();
+		$conn->close();
+		return $notice;
+	}
