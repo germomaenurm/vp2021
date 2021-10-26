@@ -107,6 +107,89 @@
 			return $notice;
 	}
 	
+	
+	function read_all_year_for_option(){
+			$options_html = null;
+			$conn = new mysqli($GLOBALS["server_host"], $GLOBALS["server_user_name"], $GLOBALS["server_password"], $GLOBALS["database"]);
+			$conn->set_charset("utf8");
+			$stmt = $conn->prepare("SELECT id, production_year FROM movie");
+			echo $conn->error;
+			$stmt->bind_result($id_from_db, $production_year_from_db);
+			$stmt->execute();
+			while($stmt->fetch()){
+				$options_html .= '<option value=" ' .$id_from_db .'"';
+				if(id_from_db == $selected){
+					$options_html .= " selected";
+				}
+				$options_html .= ">" .$production_year_from_db ."</option> \n";
+			}	
+			$stmt->close();
+			$conn->close();
+			return $options_html;
+		}
+		
+		
+		
+		
+		
+		function read_all_movie_for_option_i(){
+			$options_html = null;
+			$conn = new mysqli($GLOBALS["server_host"], $GLOBALS["server_user_name"], $GLOBALS["server_password"], $GLOBALS["database"]);
+			$conn->set_charset("utf8");
+			$stmt = $conn->prepare("SELECT id, title FROM movie");
+			echo $conn->error;
+			$stmt->bind_result($id_from_db, $title_from_db);
+			$stmt->execute();
+			while($stmt->fetch()){
+				$options_html .= '<option value=" ' .$id_from_db .'"';
+				if(id_from_db == $selected){
+					$options_html .= " selected";
+				}
+				$options_html .= ">" .$title_from_db ."</option> \n";
+			}	
+			$stmt->close();
+			$conn->close();
+			return $options_html;
+		}
+		
+		
+		function hoursandmins($time, $format = '%02d:%02d')
+	{
+		if ($time < 1) {
+			return;
+		}
+		$hours = floor($time / 60);
+		$minutes = ($time % 60);
+		return sprintf($format, $hours, $minutes);
+	}	
+	
+	
+	
+
+		function read_all_duration_for_option($selected){
+        $options_html = null;
+        $conn = new mysqli($GLOBALS["server_host"], $GLOBALS["server_user_name"], $GLOBALS["server_password"], $GLOBALS["database"]);
+        $conn->set_charset("utf8");
+        //<option value="x" selected>Film</option>
+        $stmt = $conn->prepare("SELECT id, duration FROM movie");
+        $stmt->bind_result($id_from_db, $duration_from_db);
+        $stmt->execute();
+        while($stmt->fetch()){
+           $options_html .= '<option value="' .$id_from_db .'"'; 
+           if($selected == $id_from_db){
+                $options_html .= " selected";
+            }
+            $options_html .= ">" .$duration_from_db ."</option> \n";
+        }
+        $stmt->close();
+        $conn->close();
+        return $options_html;
+    }
+	
+	
+	
+
+	
 		
 		
 		//---------------------vana osa-------------------------------

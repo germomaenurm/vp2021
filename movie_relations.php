@@ -86,9 +86,7 @@
 			$time_stamp = microtime(1) * 10000;
 			//moodustan failinime
 			$file_name = "person_" .$_POST["$person_select_for_photo"] ."_" .$time_stamp ."." .$file_type;
-			if(move_uploaded_file($_FILES["photo_input"]["tmp_name"], $person_photo_dir .$file_name)){
-				$photo_upload_notice = 
-			}
+			move_uploaded_file($_FILES["photo_input"]["tmp_name"], $person_photo_dir .$file_name);
 		}
 		
 	}
@@ -135,6 +133,8 @@
         <input type="submit" name="person_in_movie_submit" value="Salvesta">
     </form>
     <p><?php echo $person_in_movie_notice; ?></p>
+	
+	
 	<h3>Filmi tegelase foto</h3>
 	<form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" enctype="multipart/form-data">
 		
@@ -150,5 +150,22 @@
 		<input type="submit" name="person_photo_submit" value="Lae pilt üles">
 	</form>
 	<p><?php echo $photo_upload_notice; ?></p>
+	
+	
+	<h3>Film ja selle pikkus<h3>
+	<form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+		<label for="movie_select">Film: </label>
+		<select name="movie_select" id="movie_select">
+			<option value="" selected disabled>Vali Film</option>
+			<?php echo read_all_movie_for_option_i($selected_movie_for_relation); ?>
+		</select>
+		
+		<label for="duration_select">Pikkus: </label>
+		<select name="duration_select" id="duration_select">
+			<option value="" selected disabled>Vali pikkus</option>
+			<?php echo read_all_duration_for_option($selected_movie_for_relation); ?>
+		</select>
+		<input type="submit" name="person_in_movie_submit" value="Salvesta">
+	
 </body>
 </html>
