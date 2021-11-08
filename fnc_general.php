@@ -5,8 +5,8 @@
 		$data = trim($data);
 		return $data;
 	}
-	
-	function duration_hour_and_min($value){
+    
+    function duration_min_to_hour_and_min($value){
 		$hours_and_minutes = null;
 		if($value == 1){
 			$hours_and_minutes = $value ." minut";
@@ -36,4 +36,3 @@
 		$temp_date = new DateTime($value);
 		return $temp_date->format("d.m.Y");
 	}
-	

@@ -114,7 +114,7 @@
 ?>
 <!DOCTYPE html>
 <html lang="et">
-	<head>
+<head>
 	<meta charset="utf-8">
 	<title><?php echo $author_name; ?>, veebiprogrammeerimine</title>
 </head>
@@ -122,16 +122,16 @@
 	<h1><?php echo $author_name; ?>, veebiprogrammeerimine</h1>
 	<p>See leht on valminud õppetöö raames ja ei sisalda mingit tõsiseltvõetavat sisu!</p>
 	<p>Õppetöö toimub <a href="https://www.tlu.ee/dt">Tallinna Ülikooli Digitehnoloogiate instituudis</a>.</p>
-	<p>See kool on khuul!</p>
+	<p>Õppetöö toimus 2021 sügisel.</p>
 	<hr>
     <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-    <input type="email" name="email_input" placeholder="kasutajatunnus ehk e-post">
-    <input type="password" name="password_input" placeholder="salasõna">
-    <input type="submit" name="login_submit" value="Logi sisse">
+        <input type="email" name="email_input" placeholder="email ehk kasutajatunnus" value="<?php echo $email; ?>">
+        <input type="password" name="password_input" placeholder="salasõna">
+        <input type="submit" name="login_submit" value="Logi sisse">
+		<span><?php echo $notice; ?></span>
     </form>
-    <p><?php echo $notice; ?></p>
+    <p>Loo endale <a href="add_user.php">kasutaja</a>!</p>
     <hr>
-	
 	<!--ekraanivorm-->
 	<form method="POST">
 		<input type="text" name="todays_adjective_input" placeholder="tänase päeva ilma omadus" value="<?php echo $todays_adjective; ?>">
@@ -140,6 +140,8 @@
 	</form>
 	<?php echo $today_html; ?>
 	<hr>
+    <?php echo show_latest_public_foto(); ?>
+    <hr>
 	
 	<form method="POST">
 		<?php echo $photo_select_html; ?>

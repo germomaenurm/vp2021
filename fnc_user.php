@@ -44,12 +44,25 @@
         if($stmt->fetch()){
             //kasutaja on olemas, kontrollime parooli
             if(password_verify($password, $password_from_db)){
+                //ongi õige
 				$_SESSION["user_id"] = $id_from_db;
                 $_SESSION["first_name"] = $firstname_from_db;
                 $_SESSION["last_name"] = $lastname_from_db;
-				//siin edaspidi sisselogimisel pärime sql-iga kasutaja profiili, kui see on olemas, siis loeme sealt tausta ja teksti värvid, muidu kasutame mingeid vaikevärve
-				$_SESSION["bg_color"] = "#AAAAAA"; //valge: #FFFFFF
-				$_SESSION["text_color"] = "#0000AA"; //must: #000000
+                $stmt->close();
+				$stmt = $conn->prepare("SELECT bgcolor, txtcolor FROM vpr_userprofiles WHERE userid = ?");
+				$stmt->bind_param("i", $_SESSION["user_id"]);
+				$stmt->bind_result($bg_color_from_db, $txt_color_from_db);
+				$stmt->execute();
+				$_SESSION["text_color"] = "#000000";
+				$_SESSION["bg_color"] = "#FFFFFF";
+				if($stmt->fetch()){
+					if(!empty($txt_color_from_db)){
+						$_SESSION["text_color"] = $txt_color_from_db;
+					}
+					if(!empty($bg_color_from_db)){
+						$_SESSION["bg_color"] = $bg_color_from_db;
+					}
+				}
                 $stmt->close();
                 $conn->close();
                 header("Location: home.php");
@@ -64,14 +77,14 @@
         $stmt->close();
         $conn->close();
         return $notice; 
-    }	
+    }
 	
 	function read_user_description(){
-		//kui profiil on juba olemas, siis loeb kasutaja lühitutvustust
+		//kui profiil on olemas, loeb kasutaja lühitutvustuse
 		$notice = null;
 		$conn = new mysqli($GLOBALS["server_host"], $GLOBALS["server_user_name"], $GLOBALS["server_password"], $GLOBALS["database"]);
 		$conn->set_charset("utf8");
-		//vaatame kas profiil on juba olemas
+		//vaatame, kas on profiil olemas
 		$stmt = $conn->prepare("SELECT description FROM vpr_userprofiles WHERE userid = ?");
 		echo $conn->error;
 		$stmt->bind_param("i", $_SESSION["user_id"]);
@@ -89,7 +102,7 @@
 		$notice = null;
 		$conn = new mysqli($GLOBALS["server_host"], $GLOBALS["server_user_name"], $GLOBALS["server_password"], $GLOBALS["database"]);
 		$conn->set_charset("utf8");
-		//vaatame kas profiil on juba olemas
+		//vaatame, kas on profiil olemas
 		$stmt = $conn->prepare("SELECT id FROM vpr_userprofiles WHERE userid = ?");
 		echo $conn->error;
 		$stmt->bind_param("i", $_SESSION["user_id"]);
