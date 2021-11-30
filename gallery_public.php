@@ -1,18 +1,9 @@
 <?php
-    //alustame sessiooni
-    session_start();
-    //kas on sisselogitud
-    if(!isset($_SESSION["user_id"])){
-        header("Location: page.php");
-    }
-    //väljalogimine
-    if(isset($_GET["logout"])){
-        session_destroy();
-        header("Location: page.php");
-    }
+    require_once("use_session.php");
 	
     require_once("../../config.php");
 	require_once("fnc_gallery.php");
+	require_once("fnc_general.php");
     
     $public_from = 2;
     $page = 1;
@@ -27,10 +18,33 @@
         $page = $_GET["page"];
     }
     
-    $to_head = '<link rel="stylesheet" type="text/css" href="style/gallery.css">';
+    $to_head = '<link rel="stylesheet" type="text/css" href="style/gallery.css">' ."\n";
+	$to_head .= '<link rel="stylesheet" type="text/css" href="style/modal.css">' ."\n";
+	$to_head .= '<script src="javascript/modal.js" defer></script>' ."\n";
+	
     require("page_header.php");
 ?>
-
+	<!--Modaalaken galeriipildi näitamiseks-->
+	<div id="modalarea" class="modalarea">
+		<!--sulhemisnupp-->
+		<span id="modalclose" class="modalclose">&times;</span>
+		<div class="modalhorizontal">
+			<div class="modalvertical">
+				<p id="modalcaption"></p>
+				<img id="modalimg" src="pics/empty.png" alt="Galeriipilt">
+				<br>
+				<input id="rate1" name="rating" type="radio" value="1"><label for="rate1">1</label>
+				<input id="rate2" name="rating" type="radio" value="2"><label for="rate2">2</label>
+				<input id="rate3" name="rating" type="radio" value="3"><label for="rate3">3</label>
+				<input id="rate4" name="rating" type="radio" value="4"><label for="rate4">4</label>
+				<input id="rate5" name="rating" type="radio" value="5"><label for="rate5">5</label>
+				<button id="storeRating" type="button">Salvesta hinne</button>
+				<br>
+				<p id="avgRating"></p>
+			</div>
+		</div>
+	</div>
+	
 	<h1><?php echo $_SESSION["first_name"] ." " .$_SESSION["last_name"]; ?>, veebiprogrammeerimine</h1>
 	<p>See leht on valminud õppetöö raames ja ei sisalda mingisugust tõsiseltvõetavat sisu!</p>
 	<p>Õppetöö toimus <a href="https://www.tlu.ee/dt">Tallinna Ülikooli Digitehnoloogiate instituudis</a>.</p>
@@ -41,7 +55,7 @@
     </ul>
 	<hr>
     <h2>Avalike fotode galerii</h2>
-    <div>
+    <div id="gallery" class="gallery">
     <p>
     <?php
         //<span>Eelmine leht</span> | <span>Järgmine leht</span>

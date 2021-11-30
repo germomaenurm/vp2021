@@ -1,7 +1,10 @@
 <?php
-	session_start();
+	//session_start();
+	require_once("classes/SessionManager.class.php");
+	SessionManager::sessionStart("vp", 0, "/~germae/vp2021", "greeny.cs.tlu.ee");
 	require_once("../../config.php");
 	require_once("fnc_user.php");
+	require_once("fnc_gallery.php");
 	$author_name = "Germo Mäenurm";
 	
 	//vaatan mida POST meetodil saadeti
